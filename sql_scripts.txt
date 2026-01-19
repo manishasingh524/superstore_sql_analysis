@@ -1,0 +1,143 @@
+/* =========================================================
+   SUPERSTORE DATASET – SQL ANALYSIS
+   Database: project_db
+   Table: superstore_dataset
+   ========================================================= */
+
+
+/* =========================================================
+   1. DATABASE & SERVER CHECKS
+   ========================================================= */
+
+-- Check secure file path (for CSV imports)
+SELECT @@secure_file_priv;
+
+-- Use the project database
+USE project_db;
+
+
+/* =========================================================
+   2. BASIC DATA EXPLORATION
+   ========================================================= */
+
+-- Total number of records
+
+SELECT COUNT(*) 
+FROM superstore_dataset;
+
+-- View first 10 rows (correct way)
+SELECT * 
+FROM superstore_dataset
+LIMIT 10;
+
+-- View full table (use carefully)
+SELECT * 
+FROM superstore_dataset;
+
+-- Describe table structure
+DESC superstore_dataset;
+
+
+/* =========================================================
+   3. FILTERING DATA (WHERE CLAUSE)
+   ========================================================= */
+
+-- Filter by category
+
+SELECT *
+FROM superstore_dataset
+WHERE Category = 'Technology';
+
+-- Filter sales greater than 500
+
+SELECT *
+FROM superstore_dataset
+WHERE Sales > 500;
+
+
+/* =========================================================
+   4. SORTING DATA (ORDER BY)
+   ========================================================= */
+
+-- Sort by sales (highest first)
+
+SELECT *
+FROM superstore_dataset
+ORDER BY Sales DESC;
+
+-- Sort by profit (lowest first)
+
+SELECT *
+FROM superstore_dataset
+ORDER BY Profit ASC;
+
+
+/* =========================================================
+   5. AGGREGATION FUNCTIONS
+   ========================================================= */
+
+-- Total sales by category
+
+SELECT 
+    Category,
+    SUM(Sales) AS total_sales
+FROM superstore_dataset
+GROUP BY Category;
+
+-- Average profit by category
+
+SELECT 
+    Category,
+    AVG(Profit) AS avg_profit
+FROM superstore_dataset
+GROUP BY Category;
+
+-- Order count by region
+
+SELECT 
+    Region,
+    COUNT(*) AS order_count
+FROM superstore_dataset
+GROUP BY Region;
+
+
+/* =========================================================
+   6. GROUP BY WITH HAVING
+   ========================================================= */
+
+-- Categories with total sales greater than 1000
+
+SELECT 
+    Category,
+    SUM(Sales) AS total_sales
+FROM superstore_dataset
+GROUP BY Category
+HAVING SUM(Sales) > 1000;
+
+
+/* =========================================================
+   7. BETWEEN CLAUSE
+   ========================================================= */
+
+-- Sales between 500 and 1000
+
+SELECT *
+FROM superstore_dataset
+WHERE Sales BETWEEN 500 AND 1000;
+
+-- Customer names alphabetically between A and M
+SELECT *
+FROM superstore_dataset
+WHERE CustomerName BETWEEN 'A' AND 'M';
+
+
+/* =========================================================
+   8. DATE RANGE FILTERING
+   ========================================================= */
+
+-- Orders between 2015 and 2017 in West region
+
+SELECT *
+FROM superstore_dataset
+WHERE Order_Date BETWEEN '2015-01-01' AND '2017-12-31'
+  AND Region = 'West';
